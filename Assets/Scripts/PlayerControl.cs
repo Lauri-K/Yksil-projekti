@@ -12,6 +12,8 @@ public class PlayerControl : MonoBehaviour
     public float speed;
     public float jumpPower;
 
+    [SerializeField] private WallsManager wallManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,5 +31,31 @@ public class PlayerControl : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("LWall"))
+        {
+            wallManager.hitLeft = true;
+        }
+
+        else if (other.gameObject.CompareTag("RWall"))
+        {
+            wallManager.hitRight = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("LWall"))
+        {
+            wallManager.hitLeft = false;
+        }
+
+        else if (other.gameObject.CompareTag("RWall"))
+        {
+            wallManager.hitRight = false;
+        }
     }
 }
